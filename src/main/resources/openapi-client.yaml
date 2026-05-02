@@ -29,11 +29,23 @@ paths:
       parameters:
         - $ref: '#/components/parameters/XDeviceIpHeader'
         - $ref: '#/components/parameters/XSessionHeader'
+        - $ref: '#/components/parameters/XPageHeader'
+        - $ref: '#/components/parameters/XPageSizeHeader'
+        - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/StatusQuery'
         - $ref: '#/components/parameters/UserTypeQuery'
       responses:
         '200':
           description: Users retrieved successfully.
+          headers:
+            x-total-count:
+              $ref: '#/components/headers/XTotalCount'
+            x-page:
+              $ref: '#/components/headers/XPage'
+            x-page-size:
+              $ref: '#/components/headers/XPageSize'
+            x-total-pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -42,6 +54,8 @@ paths:
                   $ref: '#/components/schemas/UserResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -142,10 +156,22 @@ paths:
         - $ref: '#/components/parameters/XDeviceIpHeader'
         - $ref: '#/components/parameters/XSessionHeader'
         - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/XPageHeader'
+        - $ref: '#/components/parameters/XPageSizeHeader'
+        - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/StatusQuery'
       responses:
         '200':
           description: User addresses retrieved successfully.
+          headers:
+            x-total-count:
+              $ref: '#/components/headers/XTotalCount'
+            x-page:
+              $ref: '#/components/headers/XPage'
+            x-page-size:
+              $ref: '#/components/headers/XPageSize'
+            x-total-pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -154,6 +180,8 @@ paths:
                   $ref: '#/components/schemas/AddressResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -259,10 +287,22 @@ paths:
         - $ref: '#/components/parameters/XDeviceIpHeader'
         - $ref: '#/components/parameters/XSessionHeader'
         - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/XPageHeader'
+        - $ref: '#/components/parameters/XPageSizeHeader'
+        - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/StatusQuery'
       responses:
         '200':
           description: User phones retrieved successfully.
+          headers:
+            x-total-count:
+              $ref: '#/components/headers/XTotalCount'
+            x-page:
+              $ref: '#/components/headers/XPage'
+            x-page-size:
+              $ref: '#/components/headers/XPageSize'
+            x-total-pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -271,6 +311,8 @@ paths:
                   $ref: '#/components/schemas/PhoneResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -389,6 +431,39 @@ components:
         maxLength: 36
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
         example: "7f2c1a54-4cf0-4d8c-9b18-2a6a57e7f7f3"
+    XPageHeader:
+      name: x-page
+      in: header
+      required: false
+      description: Page number to retrieve.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+        example: 1
+    XPageSizeHeader:
+      name: x-page-size
+      in: header
+      required: false
+      description: Maximum number of resources to retrieve per page.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 20
+        example: 20
+    SearchQuery:
+      name: search
+      in: query
+      required: false
+      description: Search value used to find partial matches in the backend-defined searchable fields for this resource.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        example: "Gerson"
     UserId:
       name: id
       in: path
@@ -433,6 +508,37 @@ components:
       description: Filters users by user type.
       schema:
         $ref: '#/components/schemas/UserType'
+
+  headers:
+    XTotalCount:
+      description: Total number of resources matching the submitted filters.
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        example: 125
+    XPage:
+      description: Current page number returned in the response.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        example: 1
+    XPageSize:
+      description: Maximum number of resources returned per page.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        example: 20
+    XTotalPages:
+      description: Total number of pages available for the submitted filters.
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        example: 7
 
   responses:
     BadRequest:

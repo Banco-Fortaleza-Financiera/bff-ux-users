@@ -119,12 +119,6 @@ compileJava {
     dependsOn tasks.buildSpringServer, tasks.buildClient
 }
 
-processResources {
-    filesMatching('application.yml') {
-        expand(projectName: rootProject.name)
-    }
-}
-
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport

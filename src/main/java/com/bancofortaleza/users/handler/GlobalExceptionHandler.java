@@ -3,11 +3,16 @@ package com.bancofortaleza.users.handler;
 import com.bancofortaleza.users.domain.exceptions.ApiException;
 import com.bancofortaleza.users.domain.model.ErrorResponse;
 import com.bancofortaleza.users.utils.AppLogger;
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -23,6 +28,21 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<byte[]> handleFeignException(FeignException exception) {
+        int status = exception.status();
+        AppLogger.warn(GlobalExceptionHandler.class, "Downstream service error status={}", status);
+
+        if (status < 100 || status > 599) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+        }
+
+        return ResponseEntity
+            .status(HttpStatusCode.valueOf(status))
+            .headers(toHttpHeaders(exception.responseHeaders()))
+            .body(exception.content());
+    }
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ErrorResponse> handleApiException(ApiException exception, HttpServletRequest request) {
@@ -211,5 +231,15 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(status).body(response);
+    }
+
+    private HttpHeaders toHttpHeaders(Map<String, Collection<String>> responseHeaders) {
+        HttpHeaders headers = new HttpHeaders();
+        responseHeaders.forEach((name, values) -> {
+            if (name != null && values != null) {
+                values.forEach(value -> headers.add(name, value));
+            }
+        });
+        return headers;
     }
 }
