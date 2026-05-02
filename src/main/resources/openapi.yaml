@@ -22,7 +22,7 @@ security:
   - bearerAuth: []
 
 paths:
-  /channel/users:
+  /channel/v1/users:
     get:
       tags:
         - Users
@@ -92,7 +92,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /channel/users/{id}:
+  /channel/v1/users/{id}:
     get:
       tags:
         - Users
@@ -148,7 +148,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /channel/users/{id}/addresses:
+  /channel/v1/users/{id}/addresses:
     get:
       tags:
         - UserAddresses
@@ -221,7 +221,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /channel/users/{id}/addresses/{addressId}:
+  /channel/v1/users/{id}/addresses/{addressId}:
     get:
       tags:
         - UserAddresses
@@ -279,7 +279,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /channel/users/{id}/phones:
+  /channel/v1/users/{id}/phones:
     get:
       tags:
         - UserPhones
@@ -352,7 +352,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /channel/users/{id}/phones/{phoneId}:
+  /channel/v1/users/{id}/phones/{phoneId}:
     get:
       tags:
         - UserPhones
