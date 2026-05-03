@@ -47,4 +47,8 @@ spring.cloud.openfeign:
 support:
   name: ${SUPPORT_SERVICE_NAME}
   url: ${SUPPORT_SERVICE_URL}
+
+auth:
+  name: ${AUTH_SERVICE_NAME}
+  url: ${AUTH_SERVICE_URL}
   

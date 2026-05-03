@@ -59,6 +59,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -87,6 +89,8 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -112,6 +116,8 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -141,6 +147,8 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -185,6 +193,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -214,6 +224,8 @@ paths:
                 $ref: '#/components/schemas/AddressResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -242,6 +254,8 @@ paths:
                 $ref: '#/components/schemas/AddressResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -272,6 +286,8 @@ paths:
                 $ref: '#/components/schemas/AddressResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -316,6 +332,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -345,6 +363,8 @@ paths:
                 $ref: '#/components/schemas/PhoneResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -373,6 +393,8 @@ paths:
                 $ref: '#/components/schemas/PhoneResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -403,6 +425,8 @@ paths:
                 $ref: '#/components/schemas/PhoneResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -559,6 +583,12 @@ components:
             $ref: '#/components/schemas/Error'
     NotFound:
       description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:
@@ -855,5 +885,4 @@ components:
       required:
         - code
         - message
-
 

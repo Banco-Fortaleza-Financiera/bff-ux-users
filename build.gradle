@@ -114,9 +114,38 @@ tasks.register('buildClient', org.openapitools.generator.gradle.plugin.tasks.Gen
     }
 }
 
+tasks.register('buildAuthClient', org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/open-api-token-validation.yaml".toString()
+    outputDir = "$buildDir/generated".toString()
+    apiPackage = "com.bff.services.auth"
+    modelPackage = "com.bff.services.auth.models"
+    library = "spring-cloud"
+    validateSpec = false
+    configOptions = [
+            useSpringBoot3                          : "true",
+            useJakartaEe                            : "true",
+            serializableModel                       : "true",
+            dateLibrary                             : "java8",
+            openApiNullable                         : "false",
+            apiFirst                                : "false",
+            generateForOpenFeign                    : "true",
+            configPackage                           : "com.bff.services.config",
+            sourceFolder                            : "src/main/java",
+            disallowAdditionalPropertiesIfNotPresent: "true",
+            useBeanValidation                       : "true",
+            generatedConstructorWithRequiredArgs    : "false",
+            generateConstructorWithAllArgs          : "false",
+            springdocVersion                        : "2.3.0"
+    ]
+    doLast {
+        println 'Tarea buildAuthClient finalizada.'
+    }
+}
+
 
 compileJava {
-    dependsOn tasks.buildSpringServer, tasks.buildClient
+    dependsOn tasks.buildSpringServer, tasks.buildClient, tasks.buildAuthClient
 }
 
 test {
