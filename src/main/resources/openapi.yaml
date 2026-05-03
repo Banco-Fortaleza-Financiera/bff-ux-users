@@ -59,8 +59,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -89,8 +87,6 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -116,8 +112,6 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -147,8 +141,6 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -193,8 +185,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -224,8 +214,6 @@ paths:
                 $ref: '#/components/schemas/AddressResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -254,8 +242,6 @@ paths:
                 $ref: '#/components/schemas/AddressResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -286,8 +272,6 @@ paths:
                 $ref: '#/components/schemas/AddressResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -332,8 +316,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -363,8 +345,6 @@ paths:
                 $ref: '#/components/schemas/PhoneResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -393,8 +373,6 @@ paths:
                 $ref: '#/components/schemas/PhoneResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -425,8 +403,6 @@ paths:
                 $ref: '#/components/schemas/PhoneResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '405':
@@ -587,12 +563,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     MethodNotAllowed:
       description: Method not allowed.
       content:
@@ -625,6 +595,15 @@ components:
       maxLength: 6
       example: NORMAL
 
+    Gender:
+      type: string
+      enum:
+        - MALE
+        - FEMALE
+      minLength: 4
+      maxLength: 6
+      example: MALE
+
     UserCreateRequest:
       type: object
       additionalProperties: false
@@ -646,6 +625,18 @@ components:
           maxLength: 128
           writeOnly: true
           example: "Str0ngP@ssword"
+        gender:
+          $ref: '#/components/schemas/Gender'
+        age:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 30
+        identification:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: "1234567890101"
         status:
           $ref: '#/components/schemas/Status'
         userType:
@@ -664,6 +655,9 @@ components:
         - name
         - lastName
         - password
+        - gender
+        - age
+        - identification
 
     StatusUpdateRequest:
       type: object
@@ -694,6 +688,18 @@ components:
           minLength: 1
           maxLength: 64
           example: "Ramos"
+        gender:
+          $ref: '#/components/schemas/Gender'
+        age:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 30
+        identification:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: "1234567890101"
         status:
           $ref: '#/components/schemas/Status'
         userType:
@@ -885,4 +891,5 @@ components:
       required:
         - code
         - message
+
 
