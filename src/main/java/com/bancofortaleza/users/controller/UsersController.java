@@ -51,41 +51,17 @@ public class UsersController implements ChannelApi {
     }
 
     @Override
-    public ResponseEntity<List<AddressResponse>> listUserAddresses(
-        String xDeviceIp,
-        String xSession,
-        Integer id,
-        Integer xPage,
-        Integer xPageSize,
-        String search,
-        Status status
-    ) {
+    public ResponseEntity<List<AddressResponse>> listUserAddresses(String xDeviceIp, String xSession, Integer id, Integer xPage, Integer xPageSize, String search, Status status) {
         return addressService.listUserAddresses(xDeviceIp, xSession, id, xPage, xPageSize, search, status);
     }
 
     @Override
-    public ResponseEntity<List<PhoneResponse>> listUserPhones(
-        String xDeviceIp,
-        String xSession,
-        Integer id,
-        Integer xPage,
-        Integer xPageSize,
-        String search,
-        Status status
-    ) {
+    public ResponseEntity<List<PhoneResponse>> listUserPhones(String xDeviceIp, String xSession, Integer id, Integer xPage, Integer xPageSize, String search, Status status) {
         return phoneService.listUserPhones(xDeviceIp, xSession, id, xPage, xPageSize, search, status);
     }
 
     @Override
-    public ResponseEntity<List<UserResponse>> listUsers(
-        String xDeviceIp,
-        String xSession,
-        Integer xPage,
-        Integer xPageSize,
-        String search,
-        Status status,
-        UserType userType
-    ) {
+    public ResponseEntity<List<UserResponse>> listUsers(String xDeviceIp, String xSession, Integer xPage, Integer xPageSize, String search, Status status, UserType userType) {
         return usersService.listUsers(xDeviceIp, xSession, xPage, xPageSize, search, status, userType);
     }
 
