@@ -39,9 +39,9 @@ public class PhoneServiceImpl implements PhoneService {
             xPage,
             xPageSize,
             search,
-            mapper.map(status, com.bff.services.client.models.Status.class)
+            mapper.toClientStatus(status)
         );
-        return mapper.mapListResponse(response, PhoneResponse.class);
+        return mapper.mapPhoneListResponse(response);
     }
 
     @Override
@@ -56,9 +56,9 @@ public class PhoneServiceImpl implements PhoneService {
             xSession,
             supportHeadersProvider.getAuthenticatedUserId(),
             id,
-            mapper.map(phoneCreateRequest, com.bff.services.client.models.PhoneCreateRequest.class)
+            mapper.toClientPhoneCreateRequest(phoneCreateRequest)
         );
-        return mapper.mapResponse(response, PhoneResponse.class);
+        return mapper.mapPhoneResponse(response);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class PhoneServiceImpl implements PhoneService {
             id,
             phoneId
         );
-        return mapper.mapResponse(response, PhoneResponse.class);
+        return mapper.mapPhoneResponse(response);
     }
 
     @Override
@@ -87,8 +87,8 @@ public class PhoneServiceImpl implements PhoneService {
             supportHeadersProvider.getAuthenticatedUserId(),
             id,
             phoneId,
-            mapper.map(statusUpdateRequest, com.bff.services.client.models.StatusUpdateRequest.class)
+            mapper.toClientStatusUpdateRequest(statusUpdateRequest)
         );
-        return mapper.mapResponse(response, PhoneResponse.class);
+        return mapper.mapPhoneResponse(response);
     }
 }

@@ -39,9 +39,9 @@ public class AddressServiceImpl implements AddressService {
             xPage,
             xPageSize,
             search,
-            mapper.map(status, com.bff.services.client.models.Status.class)
+            mapper.toClientStatus(status)
         );
-        return mapper.mapListResponse(response, AddressResponse.class);
+        return mapper.mapAddressListResponse(response);
     }
 
     @Override
@@ -56,9 +56,9 @@ public class AddressServiceImpl implements AddressService {
             xSession,
             supportHeadersProvider.getAuthenticatedUserId(),
             id,
-            mapper.map(addressCreateRequest, com.bff.services.client.models.AddressCreateRequest.class)
+            mapper.toClientAddressCreateRequest(addressCreateRequest)
         );
-        return mapper.mapResponse(response, AddressResponse.class);
+        return mapper.mapAddressResponse(response);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class AddressServiceImpl implements AddressService {
             id,
             addressId
         );
-        return mapper.mapResponse(response, AddressResponse.class);
+        return mapper.mapAddressResponse(response);
     }
 
     @Override
@@ -87,8 +87,8 @@ public class AddressServiceImpl implements AddressService {
             supportHeadersProvider.getAuthenticatedUserId(),
             id,
             addressId,
-            mapper.map(statusUpdateRequest, com.bff.services.client.models.StatusUpdateRequest.class)
+            mapper.toClientStatusUpdateRequest(statusUpdateRequest)
         );
-        return mapper.mapResponse(response, AddressResponse.class);
+        return mapper.mapAddressResponse(response);
     }
 }

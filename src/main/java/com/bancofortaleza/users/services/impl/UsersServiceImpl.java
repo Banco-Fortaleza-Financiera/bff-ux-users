@@ -39,10 +39,10 @@ public class UsersServiceImpl implements UsersService {
             xPage,
             xPageSize,
             search,
-            mapper.map(status, com.bff.services.client.models.Status.class),
-            mapper.map(userType, com.bff.services.client.models.UserType.class)
+            mapper.toClientStatus(status),
+            mapper.toClientUserType(userType)
         );
-        return mapper.mapListResponse(response, UserResponse.class);
+        return mapper.mapUserListResponse(response);
     }
 
     @Override
@@ -51,9 +51,9 @@ public class UsersServiceImpl implements UsersService {
             xDeviceIp,
             xSession,
             supportHeadersProvider.getAuthenticatedUserId(),
-            mapper.map(userCreateRequest, com.bff.services.client.models.UserCreateRequest.class)
+            mapper.toClientUserCreateRequest(userCreateRequest)
         );
-        return mapper.mapResponse(response, UserResponse.class);
+        return mapper.mapUserResponse(response);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class UsersServiceImpl implements UsersService {
             supportHeadersProvider.getAuthenticatedUserId(),
             id
         );
-        return mapper.mapResponse(response, UserResponse.class);
+        return mapper.mapUserResponse(response);
     }
 
     @Override
@@ -79,8 +79,8 @@ public class UsersServiceImpl implements UsersService {
             xSession,
             supportHeadersProvider.getAuthenticatedUserId(),
             id,
-            mapper.map(statusUpdateRequest, com.bff.services.client.models.StatusUpdateRequest.class)
+            mapper.toClientStatusUpdateRequest(statusUpdateRequest)
         );
-        return mapper.mapResponse(response, UserResponse.class);
+        return mapper.mapUserResponse(response);
     }
 }
