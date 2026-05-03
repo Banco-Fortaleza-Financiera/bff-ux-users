@@ -18,12 +18,14 @@ public class TokenValidationServiceImpl implements TokenValidationService {
 
     private static final String BEARER_TOKEN_TYPE = "Bearer";
     private static final String UNAUTHORIZED_CODE = "UNAUTHORIZED";
-    private static final String UNAUTHORIZED_MESSAGE = "No tiene autorización";
+    private static final String UNAUTHORIZED_MESSAGE = "No tiene autorizacion";
+    private static final String TOKEN_VALIDATION_UNAVAILABLE_CODE = "TOKEN_VALIDATION_UNAVAILABLE";
+    private static final String TOKEN_VALIDATION_UNAVAILABLE_MESSAGE = "La validacion del token no esta disponible por el momento";
 
     private final AuthApiClient authApiClient;
 
     @Override
-    public void validate(String authorizationHeader, String xDeviceIp, String xSession) {
+    public Integer validate(String authorizationHeader, String xDeviceIp, String xSession) {
         AuthorizationToken authorizationToken = resolveAuthorizationToken(authorizationHeader);
 
         try {
@@ -34,12 +36,21 @@ public class TokenValidationServiceImpl implements TokenValidationService {
             ResponseEntity<TokenValidationResponse> response = authApiClient.validateToken(xDeviceIp, xSession, request);
             TokenValidationResponse body = response.getBody();
 
-            if (body == null || !Boolean.TRUE.equals(body.getValid())) {
+            if (body == null || !Boolean.TRUE.equals(body.getValid()) || body.getIdUser() == null) {
                 throw unauthorized();
             }
+
+            return body.getIdUser();
         } catch (FeignException.Unauthorized exception) {
             AppLogger.warn(TokenValidationServiceImpl.class, "Token validation rejected by auth service");
             throw unauthorized();
+        } catch (FeignException exception) {
+            AppLogger.warn(
+                TokenValidationServiceImpl.class,
+                "Token validation service unavailable status={}",
+                exception.status()
+            );
+            throw tokenValidationUnavailable();
         }
     }
 
@@ -58,6 +69,14 @@ public class TokenValidationServiceImpl implements TokenValidationService {
 
     private ApiException unauthorized() {
         return new ApiException(HttpStatus.UNAUTHORIZED, UNAUTHORIZED_CODE, UNAUTHORIZED_MESSAGE);
+    }
+
+    private ApiException tokenValidationUnavailable() {
+        return new ApiException(
+            HttpStatus.SERVICE_UNAVAILABLE,
+            TOKEN_VALIDATION_UNAVAILABLE_CODE,
+            TOKEN_VALIDATION_UNAVAILABLE_MESSAGE
+        );
     }
 
     private record AuthorizationToken(String tokenType, String accessToken) {

@@ -1,5 +1,6 @@
 package com.bancofortaleza.users.services.impl;
 
+import com.bancofortaleza.users.configuration.SupportHeadersProvider;
 import com.bancofortaleza.users.services.PhoneService;
 import com.bancofortaleza.users.services.mapper.OpenApiModelMapper;
 import com.bff.services.client.SupportApiClient;
@@ -18,6 +19,7 @@ public class PhoneServiceImpl implements PhoneService {
 
     private final SupportApiClient supportApiClient;
     private final OpenApiModelMapper mapper;
+    private final SupportHeadersProvider supportHeadersProvider;
 
     @Override
     public ResponseEntity<List<PhoneResponse>> listUserPhones(
@@ -32,6 +34,7 @@ public class PhoneServiceImpl implements PhoneService {
         ResponseEntity<List<com.bff.services.client.models.PhoneResponse>> response = supportApiClient.listUserPhones(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             xPage,
             xPageSize,
@@ -51,6 +54,7 @@ public class PhoneServiceImpl implements PhoneService {
         ResponseEntity<com.bff.services.client.models.PhoneResponse> response = supportApiClient.createUserPhone(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             mapper.map(phoneCreateRequest, com.bff.services.client.models.PhoneCreateRequest.class)
         );
@@ -62,6 +66,7 @@ public class PhoneServiceImpl implements PhoneService {
         ResponseEntity<com.bff.services.client.models.PhoneResponse> response = supportApiClient.getUserPhoneById(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             phoneId
         );
@@ -79,6 +84,7 @@ public class PhoneServiceImpl implements PhoneService {
         ResponseEntity<com.bff.services.client.models.PhoneResponse> response = supportApiClient.updateUserPhoneStatus(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             phoneId,
             mapper.map(statusUpdateRequest, com.bff.services.client.models.StatusUpdateRequest.class)

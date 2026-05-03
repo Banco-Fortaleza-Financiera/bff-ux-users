@@ -1,5 +1,6 @@
 package com.bancofortaleza.users.services.impl;
 
+import com.bancofortaleza.users.configuration.SupportHeadersProvider;
 import com.bancofortaleza.users.services.AddressService;
 import com.bancofortaleza.users.services.mapper.OpenApiModelMapper;
 import com.bff.services.client.SupportApiClient;
@@ -18,6 +19,7 @@ public class AddressServiceImpl implements AddressService {
 
     private final SupportApiClient supportApiClient;
     private final OpenApiModelMapper mapper;
+    private final SupportHeadersProvider supportHeadersProvider;
 
     @Override
     public ResponseEntity<List<AddressResponse>> listUserAddresses(
@@ -32,6 +34,7 @@ public class AddressServiceImpl implements AddressService {
         ResponseEntity<List<com.bff.services.client.models.AddressResponse>> response = supportApiClient.listUserAddresses(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             xPage,
             xPageSize,
@@ -51,6 +54,7 @@ public class AddressServiceImpl implements AddressService {
         ResponseEntity<com.bff.services.client.models.AddressResponse> response = supportApiClient.createUserAddress(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             mapper.map(addressCreateRequest, com.bff.services.client.models.AddressCreateRequest.class)
         );
@@ -62,6 +66,7 @@ public class AddressServiceImpl implements AddressService {
         ResponseEntity<com.bff.services.client.models.AddressResponse> response = supportApiClient.getUserAddressById(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             addressId
         );
@@ -79,6 +84,7 @@ public class AddressServiceImpl implements AddressService {
         ResponseEntity<com.bff.services.client.models.AddressResponse> response = supportApiClient.updateUserAddressStatus(
             xDeviceIp,
             xSession,
+            supportHeadersProvider.getAuthenticatedUserId(),
             id,
             addressId,
             mapper.map(statusUpdateRequest, com.bff.services.client.models.StatusUpdateRequest.class)

@@ -13,6 +13,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class TokenValidationInterceptor implements HandlerInterceptor {
 
+    public static final String AUTHENTICATED_USER_ID_ATTRIBUTE = "authenticatedUserId";
+
     private static final String DEVICE_IP_HEADER = "x-device-ip";
     private static final String SESSION_HEADER = "x-session";
 
@@ -27,11 +29,12 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        tokenValidationServiceProvider.getObject().validate(
+        Integer authenticatedUserId = tokenValidationServiceProvider.getObject().validate(
             request.getHeader(HttpHeaders.AUTHORIZATION),
             xDeviceIp,
             xSession
         );
+        request.setAttribute(AUTHENTICATED_USER_ID_ATTRIBUTE, authenticatedUserId);
         return true;
     }
 
